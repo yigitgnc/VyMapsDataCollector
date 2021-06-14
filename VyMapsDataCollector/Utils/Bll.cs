@@ -272,7 +272,7 @@ namespace VyMapsDataCollector.Utils
                 }
             });
 
-            List<Task> taskList = new List<Task>();
+            //List<Task> taskList = new List<Task>();
 
             //Sektörlere Ait Şirkelteri Çekelim...
             await TaskUtil.StartSTATask(() =>
