@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="997474fb0ee045c2b26a09f369d51276" Name="Diagram1">
+        <EntityTypeShape EntityType="vymapsDBModel.Company" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="vymapsDBModel.Country" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="vymapsDBModel.District" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="vymapsDBModel.Sector" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="vymapsDBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <AssociationConnector Association="vymapsDBModel.FK_Companies_Sectors" ManuallyRouted="false" />
+        <AssociationConnector Association="vymapsDBModel.FK_Districts_Countries" ManuallyRouted="false" />
+        <AssociationConnector Association="vymapsDBModel.FK_Sectors_Districts" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="vymapsDBModel.Setting" Width="1.5" PointX="3.375" PointY="5.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
