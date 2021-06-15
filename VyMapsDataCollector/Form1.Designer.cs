@@ -28,16 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblAktiveTask = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txtBoxParallelLimit = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.txtboxLastCompany = new System.Windows.Forms.TextBox();
             this.txtboxLastSector = new System.Windows.Forms.TextBox();
             this.txtboxLastDistrict = new System.Windows.Forms.TextBox();
             this.txtboxLastCountry = new System.Windows.Forms.TextBox();
@@ -49,12 +54,6 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lblAktiveTask = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.txtBoxParallelLimit = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.chckUseTorProxy = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -65,11 +64,12 @@
             this.rtbProxyList = new System.Windows.Forms.RichTextBox();
             this.chckUseProxy = new System.Windows.Forms.CheckBox();
             this.btnSubmitProxy = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,6 +86,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -95,14 +96,71 @@
             this.tabPage1.Text = "Veri Topla";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.lblAktiveTask);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.button1);
+            this.groupBox3.Controls.Add(this.txtBoxParallelLimit);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Location = new System.Drawing.Point(291, 179);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(327, 93);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Genel Ayarlar";
+            // 
+            // lblAktiveTask
+            // 
+            this.lblAktiveTask.AutoSize = true;
+            this.lblAktiveTask.Location = new System.Drawing.Point(284, 45);
+            this.lblAktiveTask.Name = "lblAktiveTask";
+            this.lblAktiveTask.Size = new System.Drawing.Size(13, 13);
+            this.lblAktiveTask.TabIndex = 8;
+            this.lblAktiveTask.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(223, 44);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Aktif İşlem :";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 61);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(301, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Ayarlarını Kaydet";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // txtBoxParallelLimit
+            // 
+            this.txtBoxParallelLimit.Location = new System.Drawing.Point(226, 21);
+            this.txtBoxParallelLimit.Name = "txtBoxParallelLimit";
+            this.txtBoxParallelLimit.Size = new System.Drawing.Size(77, 20);
+            this.txtBoxParallelLimit.TabIndex = 1;
+            this.txtBoxParallelLimit.Text = "10";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(97, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(123, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Paralel İşlem Kapasitesi: \r\n";
+            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.txtboxLastCompany);
             this.groupBox1.Controls.Add(this.txtboxLastSector);
             this.groupBox1.Controls.Add(this.txtboxLastDistrict);
             this.groupBox1.Controls.Add(this.txtboxLastCountry);
@@ -115,19 +173,10 @@
             this.groupBox1.Controls.Add(this.btnStart);
             this.groupBox1.Location = new System.Drawing.Point(8, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(616, 191);
+            this.groupBox1.Size = new System.Drawing.Size(616, 167);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Kontrol Paneli";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 128);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(94, 13);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "Son Kalınan Şirket";
             // 
             // label8
             // 
@@ -158,21 +207,13 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(434, 151);
+            this.button2.Location = new System.Drawing.Point(434, 128);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(176, 23);
             this.button2.TabIndex = 18;
             this.button2.Text = "Ayarları Kaydet";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // txtboxLastCompany
-            // 
-            this.txtboxLastCompany.Location = new System.Drawing.Point(110, 125);
-            this.txtboxLastCompany.Name = "txtboxLastCompany";
-            this.txtboxLastCompany.Size = new System.Drawing.Size(500, 20);
-            this.txtboxLastCompany.TabIndex = 17;
-            this.txtboxLastCompany.Text = "Son Kayda Ulaşılamadı";
             // 
             // txtboxLastSector
             // 
@@ -255,7 +296,7 @@
             this.chckReadFromLastCountry.AutoSize = true;
             this.chckReadFromLastCountry.Checked = true;
             this.chckReadFromLastCountry.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chckReadFromLastCountry.Location = new System.Drawing.Point(110, 155);
+            this.chckReadFromLastCountry.Location = new System.Drawing.Point(84, 128);
             this.chckReadFromLastCountry.Name = "chckReadFromLastCountry";
             this.chckReadFromLastCountry.Size = new System.Drawing.Size(170, 17);
             this.chckReadFromLastCountry.TabIndex = 6;
@@ -285,7 +326,6 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.groupBox3);
             this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -293,65 +333,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Ayarlar";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.lblAktiveTask);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.button1);
-            this.groupBox3.Controls.Add(this.txtBoxParallelLimit);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(297, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(327, 475);
-            this.groupBox3.TabIndex = 1;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Genel Ayarlar";
-            // 
-            // lblAktiveTask
-            // 
-            this.lblAktiveTask.AutoSize = true;
-            this.lblAktiveTask.Location = new System.Drawing.Point(78, 44);
-            this.lblAktiveTask.Name = "lblAktiveTask";
-            this.lblAktiveTask.Size = new System.Drawing.Size(13, 13);
-            this.lblAktiveTask.TabIndex = 8;
-            this.lblAktiveTask.Text = "0";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 43);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 13);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Aktif İşlem :";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(10, 446);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(301, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Ayarlarını Kaydet";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // txtBoxParallelLimit
-            // 
-            this.txtBoxParallelLimit.Location = new System.Drawing.Point(129, 21);
-            this.txtBoxParallelLimit.Name = "txtBoxParallelLimit";
-            this.txtBoxParallelLimit.Size = new System.Drawing.Size(174, 20);
-            this.txtBoxParallelLimit.TabIndex = 1;
-            this.txtBoxParallelLimit.Text = "10";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 23);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(123, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Paralel İşlem Kapasitesi: \r\n";
             // 
             // groupBox2
             // 
@@ -376,7 +357,6 @@
             this.chckUseTorProxy.AutoSize = true;
             this.chckUseTorProxy.Checked = true;
             this.chckUseTorProxy.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chckUseTorProxy.Enabled = false;
             this.chckUseTorProxy.Location = new System.Drawing.Point(5, 422);
             this.chckUseTorProxy.Name = "chckUseTorProxy";
             this.chckUseTorProxy.Size = new System.Drawing.Size(117, 17);
@@ -458,6 +438,12 @@
             this.btnSubmitProxy.UseVisualStyleBackColor = true;
             this.btnSubmitProxy.Click += new System.EventHandler(this.btnSubmitProxy_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -466,14 +452,15 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "VyMapsDataCollector";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -497,7 +484,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtBoxTimeout;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtboxLastCompany;
         private System.Windows.Forms.TextBox txtboxLastSector;
         private System.Windows.Forms.TextBox txtboxLastDistrict;
         private System.Windows.Forms.CheckBox chckReadCompanies;
@@ -507,17 +493,17 @@
         private System.Windows.Forms.TextBox txtboxLastCountry;
         private System.Windows.Forms.CheckBox chckReadFromLastCountry;
         private System.Windows.Forms.CheckBox chckUseTorProxy;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox txtBoxParallelLimit;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label lblAktiveTask;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label lblAktiveTask;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtBoxParallelLimit;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

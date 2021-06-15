@@ -74,8 +74,20 @@ namespace VyMapsDataCollector.Utils
             return proxy;
         }
 
-        public static async Task<HttpClient> CreateNewHttpClientWithTorProxy(this HttpClient incoingClient)
+        public static bool CreatingNewClientInPorcess = false;
+        public static async Task<HttpClient> CreateNewHttpClientWithTorProxy(this HttpClient incomingClient)
         {
+            if (CreatingNewClientInPorcess)
+            {
+                while (CreatingNewClientInPorcess)
+                {
+                    await Task.Delay(1000);
+                }
+
+                return incomingClient;
+            }
+
+            CreatingNewClientInPorcess = true;
             await IsUtilitiesFetched();
             // execute
             var proxy = new TorSharpProxy(Settings);
@@ -120,6 +132,8 @@ namespace VyMapsDataCollector.Utils
             //proxy.Stop();
 
             ProxyUtils.TorFirstRun = false;
+            CreatingNewClientInPorcess = false;
+
             return httpClient;
 
         }

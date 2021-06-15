@@ -19,6 +19,7 @@ namespace VyMapsDataCollector.Utils
             Client = new HttpClient(handler, disposeHandler);
         }
 
+        Random rnd = new Random();
 
         public async Task<string> myGetStringAsync(string requestUri)
         {
@@ -37,7 +38,11 @@ namespace VyMapsDataCollector.Utils
                 }
                 catch
                 {
+                    //random bir süre bekle
+                    //await Task.Delay(rnd.Next(1000, 10000));
                     Client = await Client.CreateNewHttpClientWithTorProxy();
+                    //random bir süre bekle
+                    //await Task.Delay(rnd.Next(1000, 10000));
                     testStr = await this.myGetStringAsync(requestUri);
                 }
             }

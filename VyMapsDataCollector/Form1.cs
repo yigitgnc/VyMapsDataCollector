@@ -63,10 +63,6 @@ namespace VyMapsDataCollector
                 {
                     txtboxLastSector.Text = setting.LastSectorName;
                 }
-                if (!string.IsNullOrWhiteSpace(setting.LastCompanyName))
-                {
-                    txtboxLastCompany.Text = setting.LastCompanyName;
-                }
             }
             "Program Başlatıldı. Bu Pencereyi Kapatmayın İşlem Logları Burada Gözükecek...".WriteLog();
 
@@ -116,7 +112,7 @@ namespace VyMapsDataCollector
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //Bll.ParallelLimit = Convert.ToInt32(txtBoxParallelLimit.Text);
+            Bll.ParallelThreadLimit = Convert.ToInt32(txtBoxParallelLimit.Text);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -125,6 +121,18 @@ namespace VyMapsDataCollector
             Bll.CurrentSetting.LastDistrictName = txtboxLastDistrict.Text;
             Bll.CurrentSetting.LastSectorName = txtboxLastSector.Text;
             Bll.CurrentSetting.LastCountryName = txtboxLastCountry.Text;
+            //Bll.ParallelThreadLimit = Convert.ToInt32(txtBoxParallelLimit.Text);
+        }
+
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lblAktiveTask.Text = Bll.CurrentReqCount.ToString();
         }
 
     }

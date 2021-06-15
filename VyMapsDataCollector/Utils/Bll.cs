@@ -58,6 +58,7 @@ namespace VyMapsDataCollector.Utils
 
 
         public static int ParallelThreadLimit = 1;
+        public static int CurrentReqCount = 0;
 
         public static async Task<bool> BeginDataCollect()
         {
@@ -69,29 +70,31 @@ namespace VyMapsDataCollector.Utils
             }
 
 
-            int parallelLimit = 30;
-            int currentReqCount = 0;
+
+            CurrentReqCount = 0;
             vymapsDBEntities db = new vymapsDBEntities();
 
             //ilk önce ülke kaydını çekelim
             "Veri Toplama İşlemi Başlatıldı.".WriteLog();
-            string responseBody = "";
+            //string responseBody = "";
 
             //Ülke Çekelim
             await TaskUtil.StartSTATask(() =>
             {
                 if (!BypassCountries)
                 {
+                    string responseBody = "";
                     "Önce Ülke Kayıtları Çekiliyor...".WriteLog();
 
                     Task innerTask = Task.Run(async () =>
                     {
-                        responseBody = await myClient.myGetStringAsync("https://vymaps.com/");
+                       responseBody = await myClient.myGetStringAsync("https://vymaps.com/");
                     });
 
                     while (!innerTask.IsCompleted)
                     {
-                        Task.Delay(100);
+                        Thread.Sleep(100);
+                        //Task.Delay(100);
                     }
 
                     Logger.WriteLog("Ülkeler Geldi.");
@@ -135,7 +138,7 @@ namespace VyMapsDataCollector.Utils
                             var i1 = i;
                             //Task a = TaskUtil.StartSTATask(() =>
                             //{
-                            currentReqCount++;
+                            CurrentReqCount++;
                             var country = countries[i1];
 
                             string responStringAsync = "";
@@ -153,7 +156,8 @@ namespace VyMapsDataCollector.Utils
 
                             while (!innerTask.IsCompleted)
                             {
-                                Task.Delay(100);
+                                //Task.Delay(100);
+                                Thread.Sleep(100);
                             }
 
 
@@ -183,7 +187,7 @@ namespace VyMapsDataCollector.Utils
                             // }
 
                             $"{country.Name} Bölgeleri Okunan Son Ülke Olarak Kaydedildi".WriteLog();
-                            currentReqCount--;
+                            CurrentReqCount--;
 
                             //}
                             //);
@@ -201,6 +205,7 @@ namespace VyMapsDataCollector.Utils
                         catch (Exception e)
                         {
                             Console.WriteLine(e);
+                            CurrentReqCount--;
                             //throw;
                         }
 
@@ -243,7 +248,8 @@ namespace VyMapsDataCollector.Utils
                         var district = districts[i];
                         $"{district.Country.Name} / {district.Name} Bölgesinin Sektörleri İçin Veri Bekleniyor...".WriteLog();
 
-                        responseBody = "";
+
+                        string responseBody = "";
 
                         Task innerTask = TaskUtil.StartSTATask(async () =>
                         {
@@ -252,7 +258,8 @@ namespace VyMapsDataCollector.Utils
 
                         while (!innerTask.IsCompleted || string.IsNullOrWhiteSpace(responseBody))
                         {
-                            Task.Delay(100);
+                            //Task.Delay(100);
+                            Thread.Sleep(100);
                         }
 
                         $"{district.Country.Name} / {district.Name} İçin Sektrler Geldi".WriteLog();
@@ -272,10 +279,10 @@ namespace VyMapsDataCollector.Utils
                 }
             });
 
-            //List<Task> taskList = new List<Task>();
+            List<Task> taskList = new List<Task>();
 
             //Sektörlere Ait Şirkelteri Çekelim...
-            await TaskUtil.StartSTATask(() =>
+            Task t = TaskUtil.StartSTATask(async () =>
             {
 
                 if (!BypassCompanies)
@@ -310,95 +317,140 @@ namespace VyMapsDataCollector.Utils
                     }
 
 
-                    int lastIteration = 0;
-
-                    for (int i = lastIteration; i < sectors.Count(); i++)
+                    //int lastIteration = 0;
+                    int i = 0;
+                    while (i < sectors.Count)
+                    //for (int i = 0; i < sectors.Count(); i++)
                     {
 
-                        #region Sektröe ait şirketleri alan kod
 
-                        var sector = sectors[i];
-                        $"{sector.Name} sektörünün Şirket kayıtlarınin 1. Sayfası İçin Veri Bekleniyor...".WriteLog();
-
-                        responseBody = "";
-                        Task task = Task.Run(async () =>
+                        Task paralelStaTask = TaskUtil.StartSTATask(() =>
                         {
-                            responseBody = await myClient.myGetStringAsync(sector.Url);
-                        });
-                        while (!task.IsCompleted)
-                        {
-                            Task.Delay(100);
-                        }
 
-                        $"{sector.District.Country.Name}/{sector.District.Name}/{sector.Name} Sektörü İçin Firmalar Geldi".WriteLog();
+                            CurrentReqCount++;
+                            string responseBody = "";
 
-                        int pageNumber = 1;
+                            i++;
+                            #region Sektröe ait şirketleri alan kod
 
-                        HtmlDocument convertedDoc = null;
-                        Task innerTask = TaskUtil.StartSTATask(() =>
-                        {
-                            convertedDoc = responseBody.StringToWebBrowserDocument();
-                            pageNumber = GetPageNumberFromDocument(convertedDoc);
-                            //Task test = Task.Run(async () =>
-                            //{
-                            /*await*/
-                            GetCompaniesFromDocument(convertedDoc, sector);
-                            //});
-                            //while (!test.IsCompleted)
-                            //{
-                            //    Task.Delay(100);
-                            //}
-                        });
-                        while (!innerTask.IsCompleted || string.IsNullOrWhiteSpace(responseBody) || convertedDoc == null)
-                        {
-                            Task.Delay(100);
-                        }
+                            var sector = sectors[i];
 
-                        //await GetCompaniesFromDocument(convertedDoc, sector);
+                            //test
+                            try
+                            {
+                                if (sector == sectors[i - 1])
+                                {
+                                    
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
 
-                        for (int j = 2; j <= pageNumber; j++)
-                        {
-                            $"{sector.District.Country.Name}/{sector.District.Name}/{sector.Name} Sektörü İçin {j}. Sayfa İçin İstek Atılıyor...".WriteLog();
+
+                            $"{sector.Name} sektörünün Şirket kayıtlarınin 1. Sayfası İçin Veri Bekleniyor..."
+                                .WriteLog();
 
                             responseBody = "";
-                            Task Itask = Task.Run(async () =>
+                            Task task = Task.Run(async () =>
                             {
-                                responseBody = await myClient.myGetStringAsync($"{sector.Url}{j}");
+                                responseBody = await myClient.myGetStringAsync(sector.Url);
                             });
                             while (!task.IsCompleted)
                             {
-                                Task.Delay(100);
+                                //Task.Delay(100);
+                                Thread.Sleep(100);
                             }
-                            HtmlDocument innerConvertedDoc = null;
 
-                            Task innerTaskForPage = TaskUtil.StartSTATask(() =>
+                            $"{sector.District.Country.Name}/{sector.District.Name}/{sector.Name} Sektörü İçin Firmalar Geldi"
+                                .WriteLog();
+
+                            int pageNumber = 1;
+
+                            HtmlDocument convertedDoc = null;
+                            Task innerTask = TaskUtil.StartSTATask(() =>
                             {
-                                innerConvertedDoc = responseBody.StringToWebBrowserDocument();
+                                convertedDoc = responseBody.StringToWebBrowserDocument();
+                                pageNumber = GetPageNumberFromDocument(convertedDoc);
+                                //Task test = Task.Run(async () =>
+                                //{
+                                /*await*/
+                                GetCompaniesFromDocument(convertedDoc, sector);
+                                //});
+                                //while (!test.IsCompleted)
+                                //{
+                                //    Task.Delay(100);
+                                //}
                             });
-                            while (!innerTaskForPage.IsCompleted || string.IsNullOrWhiteSpace(responseBody) || innerConvertedDoc == null)
+                            while (!innerTask.IsCompleted || string.IsNullOrWhiteSpace(responseBody) ||
+                                   convertedDoc == null)
                             {
-                                Task.Delay(100);
+                                //Task.Delay(100);
+                                Thread.Sleep(100);
                             }
 
-                            //Task tTask = Task.Run(async () =>
-                            //{
-                            /*await */
-                            GetCompaniesFromDocument(convertedDoc, sector);
-                            //});
-                            //while (!tTask.IsCompleted)
-                            //{
-                            //    Task.Delay(100);
-                            //}
+                            //await GetCompaniesFromDocument(convertedDoc, sector);
+
+                            for (int j = 2; j <= pageNumber; j++)
+                            {
+                                $"{sector.District.Country.Name}/{sector.District.Name}/{sector.Name} Sektörü İçin {j}. Sayfa İçin İstek Atılıyor..."
+                                    .WriteLog();
+
+                                responseBody = "";
+                                Task Itask = Task.Run(async () =>
+                                {
+                                    responseBody = await myClient.myGetStringAsync($"{sector.Url}{j}");
+                                });
+                                while (!Itask.IsCompleted)
+                                {
+                                    //Task.Delay(100);
+                                    Thread.Sleep(100);
+                                }
+
+                                HtmlDocument innerConvertedDoc = null;
+
+                                Task innerTaskForPage = TaskUtil.StartSTATask(() =>
+                                {
+                                    innerConvertedDoc = responseBody.StringToWebBrowserDocument();
+                                });
+                                while (!innerTaskForPage.IsCompleted || string.IsNullOrWhiteSpace(responseBody) ||
+                                       innerConvertedDoc == null)
+                                {
+                                    //Task.Delay(100);
+                                    Thread.Sleep(100);
+                                }
+
+                                //Task tTask = Task.Run(async () =>
+                                //{
+                                /*await */
+                                GetCompaniesFromDocument(innerConvertedDoc, sector);
+                                //});
+                                //while (!tTask.IsCompleted)
+                                //{
+                                //    Task.Delay(100);
+                                //}
+                            }
+
+                            CurrentSetting.LastSectorName = sector.Name;
+                            db.Entry(currentSetting).State = EntityState.Modified;
+                            db.SaveChanges();
+                            $"Şirketler İçin {sector.Name} Şirketleri Okunan Son Okunan Sektör Olarak Kaydedildi"
+                                .WriteLog();
+
+
+                            #endregion
+
+                            CurrentReqCount--;
+                            responseBody = "";
+                        });
+
+
+                        while (CurrentReqCount >= ParallelThreadLimit)
+                        {
+                            $"Paralel İşlem Limitine Ulaşıldı Mevcut İşlemlerin Bitmesi Bekleniyor ({CurrentReqCount} / {ParallelThreadLimit})".WriteLog();
+                            //Thread.Sleep(5000);
+                            await Task.Delay(5000);
                         }
-
-                        CurrentSetting.LastSectorName = sector.Name;
-                        db.Entry(currentSetting).State = EntityState.Modified;
-                        db.SaveChanges();
-                        $"Şirketler İçin {sector.Name} Şirketleri Okunan Son Okunan Sektör Olarak Kaydedildi".WriteLog();
-                        
-
-                        #endregion
-                        
                     }
                 }
                 else
@@ -407,6 +459,13 @@ namespace VyMapsDataCollector.Utils
                 }
 
             });
+
+            await t;
+
+            while (CurrentReqCount > 1)
+            {
+                await Task.Delay(10000);
+            }
 
             Logger.WriteLog("Tüm İşlemler Bitti !");
             return true;
@@ -711,6 +770,7 @@ namespace VyMapsDataCollector.Utils
 
 
                     if (!db.Companies.Any(x => x.Name == company.Name && x.SectorID == company.SectorID))
+                    //if (!db.Companies.Any(x => x.Url == company.Url))
                     {
                         if (string.IsNullOrWhiteSpace(company.Name) || string.IsNullOrWhiteSpace(company.Url))
                         {
@@ -727,13 +787,15 @@ namespace VyMapsDataCollector.Utils
                             });
                             while (!innerTask.IsCompleted || string.IsNullOrWhiteSpace(companyDetailData))
                             {
-                                Task.Delay(100);
+                                //Task.Delay(1000);
+                                Thread.Sleep(1000);
                             }
                             company = company.DetailedCompany(companyDetailData.StringToWebBrowserDocument());
 
 
                             db.Companies.Add(company);
-                            $"{company.Name} Şirket Veri Tabanına Eklendi".WriteLog();
+                            $"{sector.Name} / {company.Name} Şirket Veri Tabanına Eklendi".WriteLog();
+                            db.SaveChanges();
                         }
                     }
                     else
@@ -746,7 +808,6 @@ namespace VyMapsDataCollector.Utils
                     // ignored
                 }
             }
-            db.SaveChanges();
             $"'{sector.District.Country.Name} /{sector.District.Name} / {sector.Name}' Sekötrü İçin Tüm Şirket Kayıtları Veri Tabanına Eklendi".WriteLog();
         }
 
