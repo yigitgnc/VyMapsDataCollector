@@ -88,7 +88,7 @@ namespace VyMapsDataCollector.Utils
 
                     Task innerTask = Task.Run(async () =>
                     {
-                       responseBody = await myClient.myGetStringAsync("https://vymaps.com/");
+                        responseBody = await myClient.myGetStringAsync("https://vymaps.com/");
                     });
 
                     while (!innerTask.IsCompleted)
@@ -98,7 +98,7 @@ namespace VyMapsDataCollector.Utils
                     }
 
                     Logger.WriteLog("Ülkeler Geldi.");
-                    GetCountriesFromDocument(responseBody.StringToWebBrowserDocument());
+                     GetCountriesFromDocument(responseBody.StringToWebBrowserDocument());
                 }
                 else
                 {
@@ -338,9 +338,8 @@ namespace VyMapsDataCollector.Utils
                             //test
                             try
                             {
-                                if (sector == sectors[i - 1])
-                                {
-                                    
+                                if (sector == sectors[i - 1]){
+
                                 }
                             }
                             catch (Exception)
@@ -356,11 +355,12 @@ namespace VyMapsDataCollector.Utils
                             {
                                 responseBody = await myClient.myGetStringAsync(sector.Url);
                             });
-                            while (!task.IsCompleted)
-                            {
-                                //Task.Delay(100);
-                                Thread.Sleep(100);
-                            }
+                            //while (!task.IsCompleted)
+                            //{
+                            //    Task.Delay(100);
+                            //    //Thread.Sleep(100);
+                            //}
+                            task.Wait();
 
                             $"{sector.District.Country.Name}/{sector.District.Name}/{sector.Name} Sektörü İçin Firmalar Geldi"
                                 .WriteLog();
@@ -401,11 +401,12 @@ namespace VyMapsDataCollector.Utils
                                 {
                                     responseBody = await myClient.myGetStringAsync($"{sector.Url}{j}");
                                 });
-                                while (!Itask.IsCompleted)
-                                {
-                                    //Task.Delay(100);
-                                    Thread.Sleep(100);
-                                }
+                                //while (!Itask.IsCompleted)
+                                //{
+                                //    //Task.Delay(100);
+                                //    Thread.Sleep(100);
+                                //}
+                                Itask.Wait();
 
                                 HtmlDocument innerConvertedDoc = null;
 
@@ -431,6 +432,9 @@ namespace VyMapsDataCollector.Utils
                                 //}
                             }
 
+                            CurrentReqCount--;
+                            responseBody = "";
+
                             CurrentSetting.LastSectorName = sector.Name;
                             db.Entry(currentSetting).State = EntityState.Modified;
                             db.SaveChanges();
@@ -440,8 +444,6 @@ namespace VyMapsDataCollector.Utils
 
                             #endregion
 
-                            CurrentReqCount--;
-                            responseBody = "";
                         });
 
 
@@ -460,7 +462,7 @@ namespace VyMapsDataCollector.Utils
 
             });
 
-            await t;
+            t.Wait();
 
             while (CurrentReqCount > 1)
             {

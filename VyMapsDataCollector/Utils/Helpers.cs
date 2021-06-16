@@ -11,21 +11,25 @@ namespace VyMapsDataCollector.Utils
 {
     public static class Helpers
     {
+        private static Random rnd = new Random();
+        //static WebBrowser browser = new WebBrowser();
         public static HtmlDocument StringToWebBrowserDocument(this string html)
         {
+            Thread.Sleep(rnd.Next(5000,20000));
+            WebBrowser browser = new WebBrowser();
             HtmlDocument docToReturn = null;
             try
             {
                 //TaskUtil.StartSTATask(() =>
                 //{
-                WebBrowser browser = new WebBrowser();
                 browser.ScriptErrorsSuppressed = true;
                 browser.DocumentText = html;
                 if (browser.Document != null)
                 {
-                    browser.Document.OpenNew(true);
+                    //browser.Document.OpenNew(true);
                     browser.Document.Write(html);
-                    //});
+
+
                     //browser.Refresh();
                     docToReturn = browser.Document;
                 }
