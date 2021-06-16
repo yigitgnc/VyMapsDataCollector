@@ -98,7 +98,7 @@ namespace VyMapsDataCollector.Utils
                     }
 
                     Logger.WriteLog("Ülkeler Geldi.");
-                     GetCountriesFromDocument(responseBody.StringToWebBrowserDocument());
+                    GetCountriesFromDocument(responseBody.StringToWebBrowserDocument());
                 }
                 else
                 {
@@ -290,7 +290,9 @@ namespace VyMapsDataCollector.Utils
 
                     List<Country> countries = new List<Country>();
                     List<District> districts = new List<District>();
+                    List<District> nihai_districts = new List<District>();
                     List<Sector> sectors = new List<Sector>();
+                    List<Sector> nihai_sectors = new List<Sector>();
                     if (ResumeFromLast)
                     {
                         countries = db.Countries.Where(x => x.Name.Contains(currentSetting.LastCountryName)).ToList();
@@ -302,9 +304,37 @@ namespace VyMapsDataCollector.Utils
                             districts.AddRange(country.Districts);
                         }
 
+                        nihai_districts.AddRange(districts);
+                        //son kalınan bölgeye kadarki bölgeleri çıkart
+                        foreach (District district in nihai_districts)
+                        {
+                            if (!string.IsNullOrWhiteSpace(CurrentSetting.LastDistrictName))
+                            {
+                                if (district.Name.Contains(currentSetting.LastDistrictName))
+                                {
+                                    break;
+                                }
+                                districts.Remove(district);
+                            }
+                        }
+
                         foreach (District district in districts)
                         {
                             sectors.AddRange(district.Sectors);
+                        }
+
+                        nihai_sectors.AddRange(sectors);
+                        //son kalınan sektöre kadar ki bölgeleri çıkart
+                        foreach (Sector sector in nihai_sectors)
+                        {
+                            if (!string.IsNullOrWhiteSpace(CurrentSetting.LastSectorName))
+                            {
+                                if (sector.Name.Contains(currentSetting.LastSectorName))
+                                {
+                                    break;
+                                }
+                                sectors.Remove(sector);
+                            }
                         }
 
                         //Logger.WriteLog($"{countries.FirstOrDefault()?.Name} Ülkesinin Bölgeleri İçin ");
@@ -338,7 +368,8 @@ namespace VyMapsDataCollector.Utils
                             //test
                             try
                             {
-                                if (sector == sectors[i - 1]){
+                                if (sector == sectors[i - 1])
+                                {
 
                                 }
                             }

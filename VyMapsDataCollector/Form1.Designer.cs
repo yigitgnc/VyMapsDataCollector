@@ -221,7 +221,6 @@
             this.txtboxLastSector.Name = "txtboxLastSector";
             this.txtboxLastSector.Size = new System.Drawing.Size(500, 20);
             this.txtboxLastSector.TabIndex = 16;
-            this.txtboxLastSector.Text = "Son Kayda Ulaşılamadı";
             // 
             // txtboxLastDistrict
             // 
@@ -229,7 +228,6 @@
             this.txtboxLastDistrict.Name = "txtboxLastDistrict";
             this.txtboxLastDistrict.Size = new System.Drawing.Size(500, 20);
             this.txtboxLastDistrict.TabIndex = 15;
-            this.txtboxLastDistrict.Text = "Son Kayda Ulaşılamadı";
             // 
             // txtboxLastCountry
             // 
@@ -237,7 +235,6 @@
             this.txtboxLastCountry.Name = "txtboxLastCountry";
             this.txtboxLastCountry.Size = new System.Drawing.Size(500, 20);
             this.txtboxLastCountry.TabIndex = 14;
-            this.txtboxLastCountry.Text = "Son Kayda Ulaşılamadı";
             // 
             // chckReadCompanies
             // 
