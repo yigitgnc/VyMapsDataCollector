@@ -13,37 +13,47 @@ namespace VyMapsDataCollector.Utils
     {
         private static Random rnd = new Random();
         //static WebBrowser browser = new WebBrowser();
-        public static HtmlDocument StringToWebBrowserDocument(this string html)
+        public static HtmlDocument StringToWebBrowserDocumentOld(this string html)
         {
-            Thread.Sleep(rnd.Next(5000,20000));
-            WebBrowser browser = new WebBrowser();
+            //Thread.Sleep(rnd.Next(5000, 20000));
             HtmlDocument docToReturn = null;
-            try
+            using (WebBrowser browser = new WebBrowser())
             {
-                //TaskUtil.StartSTATask(() =>
-                //{
-                browser.ScriptErrorsSuppressed = true;
-                browser.DocumentText = html;
-                if (browser.Document != null)
+                try
                 {
-                    //browser.Document.OpenNew(true);
-                    browser.Document.Write(html);
+                    //TaskUtil.StartSTATask(() =>
+                    //{
+                    browser.ScriptErrorsSuppressed = true;
+                    browser.DocumentText = html;
+                    if (browser.Document != null)
+                    {
+                        //browser.Document.OpenNew(true);
+                        browser.Document.Write(html);
 
 
-                    //browser.Refresh();
-                    docToReturn = browser.Document;
+                        //browser.Refresh();
+                        docToReturn = browser.Document;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                StringToWebBrowserDocument(html);
-                //return null;
+                catch (Exception e)
+                {
+                    StringToWebBrowserDocument(html);
+                    //return null;
+                }
             }
 
             return docToReturn;
         }
+        public static HtmlDocument StringToWebBrowserDocument(this string html)
+        {
+            HtmlDocument htmlDoc = HtmlDocumentFactory.Create();
+            htmlDoc.Write(html);
+            //Console.WriteLine(htmlDoc.Body.InnerText);
 
-        public static System.Windows.Forms.HtmlDocument StringToWebBrowserDocumenta(this string html)
+            return htmlDoc;
+        }
+
+        public static System.Windows.Forms.HtmlDocument StringToWebBrowserDocumentFirst(this string html)
         {
             HtmlDocument doc = null;
             var th = new Thread(async () =>
@@ -73,12 +83,17 @@ namespace VyMapsDataCollector.Utils
             return doc;
         }
 
-        public static HtmlAgilityPack.HtmlDocument StringToWebBrowserDocumentHtmlAgilityPack(this string html)
-        {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(html);
-            return doc;
-        }
+        //public static HtmlAgilityPack.HtmlDocument StringToWebBrowserDocument(this string html)
+        //{
+        //    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+        //    doc.LoadHtml(html);
+
+        //    HtmlDocument a = new HtmlDocument();
+
+        //    return doc;
+
+
+        //}
 
      
 
